@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "1098067594091",
+    "firebase_url": "https://ambulance-4b108.firebaseio.com",
+    "project_id": "ambulance-4b108",
+    "storage_bucket": "ambulance-4b108.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098067594091:android:f1fada49372b5579",
+        "android_client_info": {
+          "package_name": "com.example.uptech.ambulanceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098067594091-4as7j8nmou3t2700cb8nee4t7uogimjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8vkPyJcSAqi6p9vPcr1eoQfuQ35-KLWM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1098067594091:android:ddf7d4106a543f9d",
+        "android_client_info": {
+          "package_name": "com.r3tr0.ambulanceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1098067594091-4as7j8nmou3t2700cb8nee4t7uogimjk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8vkPyJcSAqi6p9vPcr1eoQfuQ35-KLWM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
