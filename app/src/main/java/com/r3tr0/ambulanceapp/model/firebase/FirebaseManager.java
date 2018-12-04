@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -81,11 +80,8 @@ public class FirebaseManager implements ISigningManager {
                             else {// If sign in fails, display a message to the user.
 
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(context, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-
                                 if (onFirebaseProcessEndListener != null)
-                                    onFirebaseProcessEndListener.onFail();
+                                    onFirebaseProcessEndListener.onFail(task.getException());
                             }
                         }
                     });
@@ -128,11 +124,9 @@ public class FirebaseManager implements ISigningManager {
                             } else {// If sign in fails, display a message to the user.
 
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                Toast.makeText(context, "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
 
                                 if (onFirebaseProcessEndListener != null)
-                                    onFirebaseProcessEndListener.onFail();
+                                    onFirebaseProcessEndListener.onFail(task.getException());
                             }
                         }
                     });

@@ -4,5 +4,6 @@ import com.google.firebase.auth.FirebaseUser;
 
 public interface OnFirebaseProcessEndListener {
     void onSuccess(FirebaseUser user);
-    void onFail();
+
+    void onFail(Exception e);
 }

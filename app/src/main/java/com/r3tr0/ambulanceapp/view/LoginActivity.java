@@ -1,6 +1,5 @@
 package com.r3tr0.ambulanceapp.view;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +11,7 @@ import com.r3tr0.ambulanceapp.model.events.OnFirebaseProcessEndListener;
 import com.r3tr0.ambulanceapp.model.events.OnValidationProcessEndListener;
 import com.r3tr0.ambulanceapp.model.firebase.FirebaseHelper;
 import com.r3tr0.ambulanceapp.model.firebase.FirebaseManager;
+import com.r3tr0.ambulanceapp.model.models.User;
 
 public class LoginActivity extends BaseAuthActivity {
     FirebaseManager manager;
@@ -23,6 +23,8 @@ public class LoginActivity extends BaseAuthActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        initManager();
+        initViews();
     }
 
     void initManager() {
@@ -36,6 +38,7 @@ public class LoginActivity extends BaseAuthActivity {
 
             @Override
             public void onFail(int id) {
+                hideProgressDialog();
                 switch (id) {
                     case FirebaseHelper.CHECK_EMAIL:
                         Toast.makeText(LoginActivity.this, "Invalid E-mail", Toast.LENGTH_SHORT).show();
@@ -51,22 +54,31 @@ public class LoginActivity extends BaseAuthActivity {
         manager.setOnFirebaseProcessEndListener(new OnFirebaseProcessEndListener() {
             @Override
             public void onSuccess(FirebaseUser user) {
-                
+                hideProgressDialog();
+                Toast.makeText(LoginActivity.this, "You are logged in!", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFail() {
-
+            public void onFail(Exception e) {
+                hideProgressDialog();
+                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
     void initViews() {
-
+        emailEdittext = findViewById(R.id.emailEditText);
+        passwordEditText = findViewById(R.id.passwordEditText);
     }
 
     public void login(View v) {
+        showProgressDialog("Logging in ...");
 
+        manager.signIn(
+                new User(
+                        emailEdittext.getText().toString(),
+                        passwordEditText.getText().toString()
+                ));
     }
 }
