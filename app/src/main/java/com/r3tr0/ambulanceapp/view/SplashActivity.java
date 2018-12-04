@@ -1,8 +1,8 @@
 package com.r3tr0.ambulanceapp.view;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.r3tr0.ambulanceapp.R;
@@ -20,6 +20,6 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     public void signup(View v){
-
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 }

@@ -46,7 +46,7 @@ public class FirebaseRepository implements IDBManager<User> {
     public void InsertNew(User user) {
         databaseReference
                 .child("drivers")
-                .child(user.getEmail())
+                .child(user.getEmail().replaceAll("[.#$\\[\\]]", ""))
                 .setValue(user);
     }
 

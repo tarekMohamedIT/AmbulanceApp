@@ -15,7 +15,7 @@ import com.r3tr0.ambulanceapp.model.models.User;
 
 public class LoginActivity extends BaseAuthActivity {
     FirebaseManager manager;
-    EditText emailEdittext;
+    EditText emailEditText;
     EditText passwordEditText;
 
     @Override
@@ -68,7 +68,7 @@ public class LoginActivity extends BaseAuthActivity {
     }
 
     void initViews() {
-        emailEdittext = findViewById(R.id.emailEditText);
+        emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
     }
 
@@ -77,7 +77,7 @@ public class LoginActivity extends BaseAuthActivity {
 
         manager.signIn(
                 new User(
-                        emailEdittext.getText().toString(),
+                        emailEditText.getText().toString(),
                         passwordEditText.getText().toString()
                 ));
     }
