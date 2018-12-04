@@ -1,5 +1,6 @@
 package com.r3tr0.ambulanceapp.model.firebase;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 
 import com.google.firebase.database.DataSnapshot;
@@ -15,7 +16,7 @@ public class FirebaseRepository implements IDBManager<User> {
     private static FirebaseRepository instance;
 
     private DatabaseReference databaseReference;
-    private DataSnapshot mainDataSnapshot;
+    private MutableLiveData<DataSnapshot> mainDataSnapshot;
     private ValueEventListener valueEventListener;
 
     private FirebaseRepository(){
@@ -23,7 +24,9 @@ public class FirebaseRepository implements IDBManager<User> {
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mainDataSnapshot = dataSnapshot;
+                if (mainDataSnapshot == null)
+                    mainDataSnapshot = new MutableLiveData<>();
+                mainDataSnapshot.setValue(dataSnapshot);
             }
 
             @Override
@@ -32,7 +35,6 @@ public class FirebaseRepository implements IDBManager<User> {
             }
         };
         databaseReference
-                .child("drivers")
                 .addValueEventListener(valueEventListener);
     }
 
@@ -42,18 +44,22 @@ public class FirebaseRepository implements IDBManager<User> {
         return instance;
     }
 
+    public MutableLiveData<DataSnapshot> getMainDataSnapshot() {
+        return mainDataSnapshot;
+    }
+
     @Override
     public void InsertNew(User user) {
         databaseReference
                 .child("drivers")
-                .child(user.getEmail().replaceAll("[.#$\\[\\]]", ""))
+                .child(user.getPhoneNumber())
                 .setValue(user);
     }
 
     @Override
-    public User GetByID(@NonNull String email) {
-        if (mainDataSnapshot != null)
-            return mainDataSnapshot.child(email).getValue(User.class);
+    public User GetByID(@NonNull String phone) {
+        if (mainDataSnapshot.getValue() != null)
+            return mainDataSnapshot.getValue().child(phone).getValue(User.class);
         return null;
     }
 
@@ -66,16 +72,19 @@ public class FirebaseRepository implements IDBManager<User> {
     }
 
     @Override
-    public void Delete(@NonNull String email) {
+    public void Delete(@NonNull String phone) {
         databaseReference
                 .child("drivers")
-                .child(email)
+                .child(phone)
                 .removeValue();
     }
 
     public void stopListening(){
         databaseReference
-                .child("drivers")
                 .removeEventListener(valueEventListener);
+    }
+
+    public void sendMessage(String message) {
+        databaseReference.child("Message").setValue(message);
     }
 }

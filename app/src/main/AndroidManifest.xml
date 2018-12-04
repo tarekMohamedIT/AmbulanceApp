@@ -22,7 +22,12 @@
             android:name=".view.LoginActivity"
             android:parentActivityName=".view.SplashActivity" />
         <activity android:name=".view.BaseAuthActivity" />
-        <activity android:name=".view.RegisterActivity"></activity>
+        <activity android:name=".view.RegisterActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/title_activity_main"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".view.DetailsActivity"></activity>
     </application>
 
 </manifest>

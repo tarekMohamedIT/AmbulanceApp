@@ -1,6 +1,7 @@
 package com.r3tr0.ambulanceapp.model.firebase;
 
 import android.app.Activity;
+import android.arch.lifecycle.LiveData;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -10,6 +11,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.r3tr0.ambulanceapp.model.events.OnFirebaseProcessEndListener;
 import com.r3tr0.ambulanceapp.model.events.OnValidationProcessEndListener;
 import com.r3tr0.ambulanceapp.model.interfaces.ISigningManager;
@@ -42,6 +44,10 @@ public class FirebaseManager implements ISigningManager {
 
     public void setOnValidationProcessEndListener(OnValidationProcessEndListener onValidationProcessEndListener) {
         this.onValidationProcessEndListener = onValidationProcessEndListener;
+    }
+
+    public LiveData<DataSnapshot> getSnapshot() {
+        return firebaseRepository.getMainDataSnapshot();
     }
 
     /**
@@ -143,6 +149,10 @@ public class FirebaseManager implements ISigningManager {
     @Override
     public void signOut(){
         firebaseAuth.signOut();
+    }
+
+    public void sendMessage(String message) {
+        firebaseRepository.sendMessage(message);
     }
 
 

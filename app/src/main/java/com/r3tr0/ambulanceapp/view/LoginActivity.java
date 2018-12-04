@@ -1,11 +1,13 @@
 package com.r3tr0.ambulanceapp.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.r3tr0.ambulanceapp.MainActivity;
 import com.r3tr0.ambulanceapp.R;
 import com.r3tr0.ambulanceapp.model.events.OnFirebaseProcessEndListener;
 import com.r3tr0.ambulanceapp.model.events.OnValidationProcessEndListener;
@@ -56,6 +58,8 @@ public class LoginActivity extends BaseAuthActivity {
             public void onSuccess(FirebaseUser user) {
                 hideProgressDialog();
                 Toast.makeText(LoginActivity.this, "You are logged in!", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                finish();
             }
 
             @Override
