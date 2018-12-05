@@ -7,11 +7,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.r3tr0.ambulanceapp.R;
+import com.r3tr0.ambulanceapp.model.firebase.FirebaseManager;
 import com.r3tr0.ambulanceapp.model.models.Emergency;
 
 public class DetailsActivity extends AppCompatActivity {
     TextView headlineTextView;
     TextView infoTextView;
+    FirebaseManager manager;
+    Emergency emergency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +24,9 @@ public class DetailsActivity extends AppCompatActivity {
         headlineTextView = findViewById(R.id.headlineTextView);
         infoTextView = findViewById(R.id.infoTextView);
 
-        Emergency emergency = getIntent().getParcelableExtra("emergency");
+        manager = new FirebaseManager(this);
+
+        emergency = getIntent().getParcelableExtra("emergency");
 
         if (emergency != null) {
             headlineTextView.setText(String.format("Emergency : %s", emergency.getType()));
@@ -42,11 +47,13 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     public void accept(View view) {
+        manager.setAccepted(emergency.getId(), manager.getActiveUser().getId());
         Toast.makeText(this, "This emergency is accepted.", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     public void reject(View view) {
+        manager.setRejected(emergency.getId());
         finish();
     }
 }

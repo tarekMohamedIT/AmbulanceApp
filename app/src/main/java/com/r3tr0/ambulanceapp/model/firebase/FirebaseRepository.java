@@ -19,6 +19,8 @@ public class FirebaseRepository implements IDBManager<User> {
     private MutableLiveData<DataSnapshot> mainDataSnapshot;
     private ValueEventListener valueEventListener;
 
+    private User user;
+
     private FirebaseRepository(){
         databaseReference = FirebaseDatabase.getInstance().getReference();
         valueEventListener = new ValueEventListener() {
@@ -36,6 +38,7 @@ public class FirebaseRepository implements IDBManager<User> {
         };
         databaseReference
                 .addValueEventListener(valueEventListener);
+
     }
 
     public static FirebaseRepository getInstance() {
@@ -48,12 +51,24 @@ public class FirebaseRepository implements IDBManager<User> {
         return mainDataSnapshot;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public void InsertNew(User user) {
-        databaseReference
+
+        DatabaseReference newUser = databaseReference
                 .child("drivers")
-                .child(user.getPhoneNumber())
-                .setValue(user);
+                .push();
+        newUser.setValue(user);
+
+        user.setId(newUser.getKey());
+        setUser(user);
     }
 
     @Override
@@ -86,5 +101,21 @@ public class FirebaseRepository implements IDBManager<User> {
 
     public void sendMessage(String message) {
         databaseReference.child("Message").setValue(message);
+    }
+
+    public void setAccepted(String emergencyId, String driverId) {
+        databaseReference
+                .child("waiting Emergencies")
+                .child(emergencyId)
+                .child("Accepted by?")
+                .setValue("ACCEPTED-" + driverId);
+    }
+
+    public void setRejected(String emergencyId) {
+        databaseReference
+                .child("waiting Emergencies")
+                .child(emergencyId)
+                .child("Accepted by?")
+                .setValue("NONE");
     }
 }

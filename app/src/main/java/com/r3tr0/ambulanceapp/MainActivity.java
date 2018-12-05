@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.r3tr0.ambulanceapp.model.events.OnItemClickListener;
 import com.r3tr0.ambulanceapp.model.firebase.FirebaseManager;
 import com.r3tr0.ambulanceapp.model.models.Emergency;
+import com.r3tr0.ambulanceapp.model.models.User;
 import com.r3tr0.ambulanceapp.view.DetailsActivity;
 import com.r3tr0.ambulanceapp.view.adapters.EmergenciesRecyclerAdapter;
 
@@ -87,7 +88,6 @@ public class MainActivity extends AppCompatActivity
                 Log.e("test", "RECEIVED");
                 DataSnapshot emergenciesSnapshot = dataSnapshot.child("waiting Emergencies");
                 List<Emergency> emergencies = new ArrayList<>();
-
                 if (emergenciesSnapshot != null) {
 
                     for (DataSnapshot emergencySnapshot : emergenciesSnapshot.getChildren()) {
@@ -102,6 +102,27 @@ public class MainActivity extends AppCompatActivity
 
                 } else {
                     Log.e("test", "SHOUT OUT");
+                }
+
+                if (manager.getActiveUser().getPhoneNumber() == null) {
+                    for (DataSnapshot driverSnapshot : dataSnapshot.child("drivers").getChildren()) {
+                        if (driverSnapshot.child("email").getValue().equals(manager.getActiveUser().getEmail())) {
+
+                            User user = new User(
+                                    (String) driverSnapshot.getKey(),
+                                    (String) driverSnapshot.child("firstName").getValue(),
+                                    (String) driverSnapshot.child("lastName").getValue(),
+                                    (String) driverSnapshot.child("email").getValue(),
+                                    (String) driverSnapshot.child("password").getValue(),
+                                    (String) driverSnapshot.child("phoneNumber").getValue()
+                            );
+
+                            manager.setUser(user);
+
+                            Log.e("my user", "onChanged: " + manager.getActiveUser().toString());
+                            break;
+                        }
+                    }
                 }
             }
         });

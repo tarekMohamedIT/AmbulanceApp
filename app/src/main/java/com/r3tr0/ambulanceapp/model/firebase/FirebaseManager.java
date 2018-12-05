@@ -50,10 +50,18 @@ public class FirebaseManager implements ISigningManager {
         return firebaseRepository.getMainDataSnapshot();
     }
 
+    public User getActiveUser() {
+        return firebaseRepository.getUser();
+    }
+
+    public void setUser(User user) {
+        this.firebaseRepository.setUser(user);
+    }
+
     /**
      * The Sign in process is done using the
      * {@link FirebaseAuth#signInWithEmailAndPassword(String, String)}
-     *
+     * <p>
      * then in the OnCompleteListener, The event listeners are added.
      *
      * @param user The user to be logging in.
@@ -61,13 +69,14 @@ public class FirebaseManager implements ISigningManager {
      */
     @Override
     public FirebaseUser signIn(User user) {
+        setUser(user);
         return doSignIn(user);
     }
 
-    private FirebaseUser doSignIn(User user){
+    private FirebaseUser doSignIn(User user) {
         int validateID = FirebaseHelper.isUserLoginReady(user);
 
-        if (validateID == 0){
+        if (validateID == 0) {
             if (onValidationProcessEndListener != null)
                 onValidationProcessEndListener.onSuccess();
 
@@ -77,25 +86,21 @@ public class FirebaseManager implements ISigningManager {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {// Sign in success, update UI with the signed-in user's information
-
                                 Log.d(TAG, "signInWithEmail:success");
                                 if (onFirebaseProcessEndListener != null)
                                     onFirebaseProcessEndListener.onSuccess(firebaseAuth.getCurrentUser());
-                            }
-
-                            else {// If sign in fails, display a message to the user.
-
+                            } else {// If sign in fails, display a message to the user.
+                                firebaseRepository.setUser(null);
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
                                 if (onFirebaseProcessEndListener != null)
                                     onFirebaseProcessEndListener.onFail(task.getException());
                             }
                         }
                     });
-        }
-
-        else {
-            if(onValidationProcessEndListener != null)
+        } else {
+            if (onValidationProcessEndListener != null)
                 onValidationProcessEndListener.onFail(validateID);
+            setUser(null);
         }
 
         return firebaseAuth.getCurrentUser();
@@ -104,14 +109,18 @@ public class FirebaseManager implements ISigningManager {
     /**
      * The Sign in process is done using the
      * {@link FirebaseAuth#createUserWithEmailAndPassword(String, String)}
-     *
+     * <p>
      * then in the OnCompleteListener, The event listeners are added.
      *
      * @param user The user to be signed up.
      * @return The currently logged in FirebaseUser or null if not successful.
      */
     @Override
-    public FirebaseUser signUp(final User user) {
+    public FirebaseUser signUp(User user) {
+        return doSignUp(user);
+    }
+
+    private FirebaseUser doSignUp(final User user) {
         int validateID = FirebaseHelper.isUserReady(user);
 
         if (validateID == 0) {
@@ -122,38 +131,38 @@ public class FirebaseManager implements ISigningManager {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {// Sign in success, update UI with the signed-in user's information
-
                                 Log.d(TAG, "signInWithEmail:success");
                                 if (onFirebaseProcessEndListener != null)
                                     onFirebaseProcessEndListener.onSuccess(firebaseAuth.getCurrentUser());
                                 firebaseRepository.InsertNew(user);
                             } else {// If sign in fails, display a message to the user.
-
                                 Log.w(TAG, "signInWithEmail:failure", task.getException());
-
+                                firebaseRepository.setUser(null);
                                 if (onFirebaseProcessEndListener != null)
                                     onFirebaseProcessEndListener.onFail(task.getException());
                             }
                         }
                     });
-        }
-
-        else {
-            if(onValidationProcessEndListener != null)
+        } else {
+            if (onValidationProcessEndListener != null)
                 onValidationProcessEndListener.onFail(validateID);
+            setUser(null);
         }
 
         return firebaseAuth.getCurrentUser();
     }
 
     @Override
-    public void signOut(){
+    public void signOut() {
         firebaseAuth.signOut();
     }
 
-    public void sendMessage(String message) {
-        firebaseRepository.sendMessage(message);
+    public void setAccepted(String emergencyId, String driverId) {
+        firebaseRepository.setAccepted(emergencyId, driverId);
     }
 
+    public void setRejected(String emergencyId) {
+        firebaseRepository.setRejected(emergencyId);
+    }
 
 }

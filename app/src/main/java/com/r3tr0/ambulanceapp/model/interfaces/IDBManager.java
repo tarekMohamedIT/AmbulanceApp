@@ -2,8 +2,6 @@ package com.r3tr0.ambulanceapp.model.interfaces;
 
 import android.support.annotation.NonNull;
 
-import com.r3tr0.ambulanceapp.model.models.User;
-
 public interface IDBManager<V> {
 
     void InsertNew(V value);
