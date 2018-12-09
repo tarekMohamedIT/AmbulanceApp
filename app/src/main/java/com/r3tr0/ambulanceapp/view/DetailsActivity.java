@@ -42,6 +42,12 @@ public class DetailsActivity extends AppCompatActivity {
 
             infoTextView.setText(builder.toString());
 
+            if (emergency.getAcceptedBy().toLowerCase().equals("accepted"))
+                findViewById(R.id.acceptButton).setEnabled(false);
+
+            else
+                findViewById(R.id.acceptButton).setEnabled(true);
+
         }
 
     }

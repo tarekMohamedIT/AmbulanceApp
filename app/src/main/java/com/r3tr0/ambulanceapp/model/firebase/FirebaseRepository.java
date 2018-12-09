@@ -108,7 +108,7 @@ public class FirebaseRepository implements IDBManager<User> {
                 .child("waiting Emergencies")
                 .child(emergencyId)
                 .child("Accepted by?")
-                .setValue("ACCEPTED-" + driverId);
+                .setValue("ACCEPTED");
     }
 
     public void setRejected(String emergencyId) {
