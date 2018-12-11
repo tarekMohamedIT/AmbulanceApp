@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.r3tr0.ambulanceapp.MainActivity;
@@ -43,11 +42,12 @@ public class LoginActivity extends BaseAuthActivity {
                 hideProgressDialog();
                 switch (id) {
                     case FirebaseHelper.CHECK_EMAIL:
-                        Toast.makeText(LoginActivity.this, "Invalid E-mail", Toast.LENGTH_SHORT).show();
+                        showMessage("Error", "Invalid E-mail", 0);
+                        //Toast.makeText(LoginActivity.this, "Invalid E-mail", Toast.LENGTH_SHORT).show();
                         break;
 
                     case FirebaseHelper.CHECK_PASSWORD:
-                        Toast.makeText(LoginActivity.this, "Invalid Password", Toast.LENGTH_SHORT).show();
+                        showMessage("Error", "Invalid password format", 0);
                         break;
                 }
             }
@@ -57,18 +57,21 @@ public class LoginActivity extends BaseAuthActivity {
             @Override
             public void onSuccess(FirebaseUser user) {
                 hideProgressDialog();
-                Toast.makeText(LoginActivity.this, "You are logged in!", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                finish();
+                showMessage("Success", "You are logged in!", 1, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
+                });
             }
 
             @Override
             public void onFail(Exception e) {
                 hideProgressDialog();
-                Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                showMessage("Error", e.getMessage(), 0);
             }
         });
-
     }
 
     void initViews() {

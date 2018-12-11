@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.r3tr0.ambulanceapp.model.dialogs.MessageDialog;
+
 public class BaseAuthActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
@@ -30,6 +32,23 @@ public class BaseAuthActivity extends AppCompatActivity {
         if (imm != null) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+    }
+
+    public void showMessage(String title, String message, int type) {
+        MessageDialog dialog = new MessageDialog(this);
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+        dialog.setType(type);
+        dialog.show();
+    }
+
+    public void showMessage(String title, String message, int type, View.OnClickListener onClickListener) {
+        MessageDialog dialog = new MessageDialog(this);
+        dialog.setTitle(title);
+        dialog.setMessage(message);
+        dialog.setType(type);
+        dialog.setOnClickListener(onClickListener);
+        dialog.show();
     }
 
     @Override
